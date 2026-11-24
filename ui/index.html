@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Image Builder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="sidebar">
+    <div class="brand"><img src="../build/icon.png" alt=""><span>Image Builder</span></div>
+    <button class="nav active" data-page="create">Create</button>
+    <button class="nav" data-page="designs">My designs</button>
+    <button class="nav" data-page="bot">Bot</button>
+    <button class="nav" data-page="settings">Settings</button>
+    <div class="update-card" id="updateCard" hidden>
+      <b id="updateTitle"></b>
+      <span id="updateText"></span>
+      <button class="primary small" id="restartBtn" hidden>Restart now</button>
+    </div>
+    <div class="bot-pill" id="botPill"><span class="dot"></span><span id="botPillText">Bot offline</span></div>
+  </nav>
+
+  <main>
+    <!-- CREATE -->
+    <section class="page active" id="page-create">
+      <div class="create-grid">
+        <div class="panel">
+          <h2>1. Pick an image</h2>
+          <div class="drop" id="drop" tabindex="0">
+            <img id="imgPreview" alt="" hidden>
+            <div id="dropHint">Drop an image here, or click to choose<br><small>png, jpg, gif or webp</small></div>
+          </div>
+          <label>Or paste an image link
+            <input id="imgUrl" type="url" placeholder="https://...">
+          </label>
+          <h2>2. Describe it (optional)</h2>
+          <label>Size: <b id="sizeVal">24</b> blocks per side
+            <input id="size" type="range" min="8" max="64" step="1" value="24">
+          </label>
+          <label>Extra instructions
+            <textarea id="notes" rows="3" placeholder="e.g. use dark oak and stone, make it a little wider"></textarea>
+          </label>
+          <button class="primary big" id="designBtn">Design it</button>
+          <p class="hint" id="designStatus"></p>
+        </div>
+
+        <div class="panel viewer-panel">
+          <div class="empty" id="viewerEmpty">
+            <p>Your design will show up here in 3D.</p>
+            <p class="hint">Drag to rotate, scroll to zoom.</p>
+          </div>
+          <div id="viewerWrap" hidden>
+            <div class="viewer-head">
+              <div>
+                <h2 id="dName"></h2>
+                <p class="hint" id="dDesc"></p>
+              </div>
+              <div class="stats" id="dStats"></div>
+            </div>
+            <div class="canvas-wrap"><canvas id="viewer"></canvas>
+              <div class="layer-ctl">Show layers up to <input id="layerSlider" type="range" min="1" max="1" value="1"> <b id="layerVal"></b></div>
+            </div>
+            <div class="actions">
+              <button class="primary" id="exportBtn">Export for Litematica</button>
+              <button id="buildBtn">Build with bot</button>
+            </div>
+            <details class="materials" open>
+              <summary>Materials list</summary>
+              <ul id="dMaterials"></ul>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGNS -->
+    <section class="page" id="page-designs">
+      <div class="page-head">
+        <h1>My designs</h1>
+        <button id="openFolderBtn">Open folder</button>
+      </div>
+      <p class="hint">Saved designs can be exported or built again for free.</p>
+      <div class="design-list" id="designList"></div>
+    </section>
+
+    <!-- BOT -->
+    <section class="page" id="page-bot">
+      <h1>Bot</h1>
+      <div class="bot-grid">
+        <div class="panel">
+          <h2>Connection</h2>
+          <label>Server address <input id="host" placeholder="localhost or play.example.com"></label>
+          <label>Port <input id="port" type="number" placeholder="25565"></label>
+          <label>Account</label>
+          <div class="seg" id="authSeg">
+            <button data-auth="offline">Bot account</button>
+            <button data-auth="microsoft">My Microsoft account</button>
+          </div>
+          <div id="offlineFields"><label>Bot name <input id="botName"></label>
+            <p class="hint">Only works on worlds/servers with online mode off.</p></div>
+          <div id="msFields" hidden>
+            <p class="hint warn">The bot logs in <b>as you</b>. You can't be on the same server at the same time: log out first, then connect. It builds where you logged out.</p>
+          </div>
+          <label>Minecraft version <input id="mcVersion" placeholder="auto"></label>
+          <div class="msa" id="msaBox" hidden>Sign in at <a id="msaLink" target="_blank"></a> with code <b id="msaCode"></b></div>
+          <div class="row">
+            <button class="primary" id="connectBtn">Connect</button>
+            <button id="disconnectBtn" hidden>Disconnect</button>
+          </div>
+          <p class="hint" id="connStatus"></p>
+        </div>
+
+        <div class="panel">
+          <h2>Build</h2>
+          <label>Design <select id="buildDesign"></select></label>
+          <label>Where</label>
+          <div class="seg" id="placeSeg">
+            <button data-place="bot">In front of the bot</button>
+            <button data-place="player">In front of a player</button>
+            <button data-place="coords">At coordinates</button>
+          </div>
+          <div id="placePlayer" hidden><label>Player name <input id="placePlayerName"></label></div>
+          <div id="placeCoords" hidden class="coords">
+            <label>X <input id="cx" type="number"></label>
+            <label>Y <input id="cy" type="number"></label>
+            <label>Z <input id="cz" type="number"></label>
+            <label>Facing <select id="cfacing"><option>north</option><option>south</option><option>east</option><option>west</option></select></label>
+            <button id="useBotPos" class="small">Use bot's spot</button>
+          </div>
+          <div id="matCheck" class="hint"></div>
+          <div class="row">
+            <button class="primary" id="startBuildBtn" disabled>Start building</button>
+            <button id="stopBtn" disabled>Stop</button>
+          </div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <p class="hint" id="progressText"></p>
+        </div>
+      </div>
+      <div class="panel log-panel">
+        <h2>Activity</h2>
+        <pre id="log"></pre>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="page-settings">
+      <h1>Settings</h1>
+      <div class="panel narrow">
+        <label>Anthropic API key
+          <input id="apiKey" type="password" placeholder="sk-ant-...">
+        </label>
+        <p class="hint">Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Stored encrypted on this computer. Each new design costs roughly $0.10–$0.50.</p>
+        <label>Default size <input id="defSize" type="number" min="8" max="64"></label>
+        <label>Minecraft version for designs <input id="setVersion" placeholder="auto (latest supported)"></label>
+        <h2>Chat commands</h2>
+        <label class="check"><input id="chatCommands" type="checkbox"> Let a player control the bot from chat (!build, !rebuild, !stop)</label>
+        <label>Player allowed to give commands <input id="owner" placeholder="your Minecraft name"></label>
+        <label class="check"><input id="chatReplies" type="checkbox"> Bot replies in chat (everyone on the server sees it)</label>
+        <button class="primary" id="saveSettings">Save</button>
+        <p class="hint" id="settingsSaved"></p>
+      </div>
+      <div class="panel narrow about">
+        <h2>Updates</h2>
+        <p>Version <b id="appVersion"></b> · <span id="updateStatusText" class="hint"></span></p>
+        <p class="hint">The app checks for new versions on its own and installs them when you close it.</p>
+        <button id="checkUpdateBtn">Check for updates</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

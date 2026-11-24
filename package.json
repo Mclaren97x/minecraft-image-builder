@@ -1,0 +1,79 @@
+{
+  "name": "minecraft-image-builder",
+  "version": "1.1.0",
+  "description": "Minecraft bot that builds 3D structures from images",
+  "scripts": {
+    "app": "electron .",
+    "start": "node src/bot.js",
+    "design": "node src/design-cli.js",
+    "icon": "electron scripts/make-icon.mjs",
+    "dist": "electron-builder --win nsis",
+    "release": "node scripts/release.mjs"
+  },
+  "keywords": [],
+  "author": "Mclaren97x",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.13.0",
+    "electron-updater": "^6.8.11",
+    "minecraft-data": "^3.119.0",
+    "mineflayer": "^4.39.0",
+    "mineflayer-pathfinder": "^2.4.5",
+    "prismarine-item": "^1.18.0",
+    "prismarine-nbt": "^2.8.0",
+    "three": "^0.187.0",
+    "vec3": "^0.2.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  },
+  "allowScripts": {
+    "electron@45.4.1": true
+  },
+  "productName": "Image Builder",
+  "main": "electron/main.js",
+  "build": {
+    "appId": "com.imagebuilder.minecraft",
+    "productName": "Image Builder",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**",
+      "src/**",
+      "ui/**",
+      "build/icon.png",
+      "package.json",
+      "!node_modules/minecraft-data/minecraft-data/data/bedrock/*/**",
+      "node_modules/minecraft-data/minecraft-data/data/bedrock/common/**"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Image Builder",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "artifactName": "Image-Builder-Setup-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Mclaren97x",
+        "repo": "minecraft-image-builder",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mclaren97x/minecraft-image-builder.git"
+  }
+}

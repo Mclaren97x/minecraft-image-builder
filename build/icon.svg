@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a9a68"/>
+      <stop offset="1" stop-color="#1b5e3f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.35" r="0.65">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c98d52"/>
+      <stop offset="0.5" stop-color="#a86f3a"/>
+      <stop offset="1" stop-color="#7d4f26"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f7fa"/>
+      <stop offset="0.55" stop-color="#c3ccd6"/>
+      <stop offset="1" stop-color="#8a95a3"/>
+    </linearGradient>
+    <linearGradient id="steelEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9e0e8"/>
+    </linearGradient>
+    <linearGradient id="grip" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3d4148"/>
+      <stop offset="1" stop-color="#1f2226"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#06210f" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#glow)"/>
+  <rect x="17.5" y="17.5" width="477" height="477" rx="110.5" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="3"/>
+
+  <g filter="url(#shadow)">
+    <!-- Shovel: head up and to the left -->
+    <g transform="translate(256 262) rotate(-42)">
+      <rect x="-12" y="-118" width="24" height="300" rx="12" fill="url(#wood)"/>
+      <rect x="-14" y="132" width="28" height="56" rx="13" fill="url(#grip)"/>
+      <path d="M -50 -142 L 50 -142 L 50 -196 Q 50 -236 0 -254 Q -50 -236 -50 -196 Z" fill="url(#steel)"/>
+      <path d="M -50 -142 L 50 -142 L 50 -196 Q 50 -236 0 -254 Q -50 -236 -50 -196 Z" fill="none" stroke="#55606d" stroke-width="5"/>
+      <path d="M -30 -158 L -30 -200 Q -30 -224 0 -236" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="6" stroke-linecap="round"/>
+      <rect x="-17" y="-150" width="34" height="40" rx="6" fill="#5d6773"/>
+      <rect x="-17" y="-150" width="34" height="8" rx="4" fill="#808b98"/>
+    </g>
+
+    <!-- Pickaxe: head up and to the right -->
+    <g transform="translate(256 262) rotate(42)">
+      <rect x="-12" y="-150" width="24" height="332" rx="12" fill="url(#wood)"/>
+      <rect x="-14" y="132" width="28" height="56" rx="13" fill="url(#grip)"/>
+      <path d="M -140 -96 Q -80 -186 0 -192 Q 80 -186 140 -96 Q 70 -142 0 -146 Q -70 -142 -140 -96 Z" fill="url(#steel)"/>
+      <path d="M -140 -96 Q -80 -186 0 -192 Q 80 -186 140 -96 Q 70 -142 0 -146 Q -70 -142 -140 -96 Z" fill="none" stroke="#55606d" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M -110 -128 Q -55 -178 0 -182 Q 55 -178 110 -128" fill="none" stroke="url(#steelEdge)" stroke-opacity="0.8" stroke-width="5" stroke-linecap="round"/>
+      <rect x="-20" y="-190" width="40" height="48" rx="8" fill="#5d6773"/>
+      <rect x="-20" y="-190" width="40" height="9" rx="4.5" fill="#808b98"/>
+    </g>
+  </g>
+</svg>

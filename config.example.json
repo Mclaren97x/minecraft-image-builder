@@ -1,0 +1,11 @@
+{
+  "host": "localhost",
+  "port": 25565,
+  "username": "BuilderBot",
+  "auth": "offline",
+  "version": false,
+  "owner": "",
+  "defaultSize": 24,
+  "maxSize": 48,
+  "anthropicApiKey": ""
+}
