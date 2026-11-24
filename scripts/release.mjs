@@ -22,6 +22,15 @@ if (tags.includes(`v${version}`)) {
   process.exit(1)
 }
 
+// GitHub needs the version tag to exist before a release can be published.
+if (execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim()) {
+  console.error('Commit your changes first, so the release matches the code.')
+  process.exit(1)
+}
+const localTags = execFileSync('git', ['tag', '--list', `v${version}`], { encoding: 'utf8' }).trim()
+if (!localTags) execFileSync('git', ['tag', `v${version}`], { stdio: 'inherit' })
+execFileSync('git', ['push', 'origin', 'HEAD', `v${version}`], { stdio: 'inherit' })
+
 console.log(`Building and publishing version ${version}...`)
 const r = spawnSync('npx', ['electron-builder', '--win', 'nsis', '--publish', 'always'], {
   stdio: 'inherit',
